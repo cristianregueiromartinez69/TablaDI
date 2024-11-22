@@ -17,7 +17,8 @@ class TableView(QMainWindow):
                       ["Ana perez", "123123123F", "Mujer", False],
                       ["Paco Jémez", "67676767H", "Hombre", True],
                       ["Victor Roque", "12389065H", "Hombre", False],
-                      ["Juanita Sainz", "23423423D", "Mujer", True]]
+                      ["Juanita Sainz", "23423423D", "Mujer", True],
+                      ["Daniela López", "12345678G", "Otro", False]]
 
         caja = QVBoxLayout()
         self.tvwTabla = QTableView()

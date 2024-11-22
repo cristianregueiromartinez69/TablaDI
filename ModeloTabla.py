@@ -3,6 +3,7 @@ import sys
 
 
 from PyQt6.QtCore import QAbstractTableModel, Qt
+from PyQt6 import QtGui
 
 
 class ModeloTabla(QAbstractTableModel):
@@ -20,4 +21,12 @@ class ModeloTabla(QAbstractTableModel):
         if rol == Qt.ItemDataRole.EditRole or rol == Qt.ItemDataRole.DisplayRole:
             valor = self.tabla[indice.row()][indice.column()]
             return valor
+
+        if rol == Qt.ItemDataRole.BackgroundRole:
+            if self.tabla[indice.row()][2] == "Hombre":
+                return QtGui.QColor("cyan")
+            elif self.tabla[indice.row()][2] == "Mujer":
+                return QtGui.QColor("pink")
+            elif self.tabla[indice.row()][2] == "Otro":
+                return QtGui.QColor("red")
 
