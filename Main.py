@@ -24,8 +24,11 @@ class TableView(QMainWindow):
         modelo = ModeloTabla(self.datos)
         self.tvwTabla.setModel(modelo)
 
-        container = QWidget()
+        self.tvwTabla.setSelectionMode(QTableView.SelectionMode.SingleSelection)
 
+        caja.addWidget(self.tvwTabla)
+        container = QWidget()
+        container.setLayout(caja)
         self.setCentralWidget(container)
         self.show()
 
