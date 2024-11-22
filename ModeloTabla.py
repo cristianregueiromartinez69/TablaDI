@@ -32,5 +32,6 @@ class ModeloTabla(QAbstractTableModel):
 
         if rol == Qt.ItemDataRole.ForegroundRole:
             if self.tabla[indice.row()][3]:
-                return QtGui.QColor("red")
+                 if indice.column() == 3:
+                     return QtGui.QColor("red")
 
