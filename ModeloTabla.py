@@ -28,5 +28,9 @@ class ModeloTabla(QAbstractTableModel):
             elif self.tabla[indice.row()][2] == "Mujer":
                 return QtGui.QColor("pink")
             elif self.tabla[indice.row()][2] == "Otro":
+                return QtGui.QColor("orange")
+
+        if rol == Qt.ItemDataRole.ForegroundRole:
+            if self.tabla[indice.row()][3]:
                 return QtGui.QColor("red")
 
