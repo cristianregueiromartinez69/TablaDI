@@ -35,3 +35,8 @@ class ModeloTabla(QAbstractTableModel):
                  if indice.column() == 3:
                      return QtGui.QColor("red")
 
+        if rol == Qt.ItemDataRole.DecorationRole:
+            if isinstance(self.tabla[indice.row()][indice.column()], bool):
+                if self.tabla[indice.row()][indice.column()]:
+                    return QtGui.QIcon("tick.png")
+
