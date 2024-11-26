@@ -7,14 +7,14 @@ from PyQt6.QtWidgets import (QMainWindow, QApplication, QWidget, QVBoxLayout, QT
 class ButtonsCrud(QHBoxLayout):
     def __init__(self):
         super().__init__()
-        botton_insertar = QPushButton("insertar")
-        botton_actualizar = QPushButton("actualizar")
-        botton_borrar = QPushButton("borrar")
+        self.botton_insertar = QPushButton("insertar")
+        self.botton_actualizar = QPushButton("actualizar")
+        self.botton_borrar = QPushButton("borrar")
 
-        botton_insertar.setStyleSheet("background-color: cyan;")
-        botton_actualizar.setStyleSheet("background-color: yellow;")
-        botton_borrar.setStyleSheet("background-color: red;")
+        self.botton_insertar.setStyleSheet("background-color: cyan;")
+        self.botton_actualizar.setStyleSheet("background-color: yellow;")
+        self.botton_borrar.setStyleSheet("background-color: red;")
 
-        self.addWidget(botton_insertar)
-        self.addWidget(botton_actualizar)
-        self.addWidget(botton_borrar)
+        self.addWidget(self.botton_insertar)
+        self.addWidget(self.botton_actualizar)
+        self.addWidget(self.botton_borrar)

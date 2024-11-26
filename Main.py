@@ -1,7 +1,7 @@
 import sys
 
 from PyQt6.QtWidgets import (QMainWindow, QApplication, QWidget, QVBoxLayout, QTableView, QHBoxLayout, QLineEdit,
-                             QComboBox, QCheckBox, QLabel, QPushButton)
+                             QComboBox, QCheckBox, QPushButton)
 
 from ModeloTabla import ModeloTabla
 from ButtonsCrud import ButtonsCrud
@@ -41,18 +41,15 @@ class TableView(QMainWindow):
         cajaHorizontal.addWidget(self.txtNombre)
 
         self.botonesCrud = ButtonsCrud()
+        self.botonesCrud.botton_actualizar.clicked.connect(self.on_boton_update)
 
-        self.boton_confirmar = QPushButton("Confirmar")
-        self.boton_cancelar = QPushButton("Cancelar")
+        self.boton_cancelar = QPushButton("limpiar")
 
-        self.boton_confirmar.clicked.connect(self.on_boton_aceptar)
         self.boton_cancelar.clicked.connect(self.on_boton_cancelar_clicked)
 
-        self.boton_confirmar.setStyleSheet("background-color: green;")
         self.boton_cancelar.setStyleSheet("background-color: gray;")
 
         self.caja_botones_afir_cancel = QHBoxLayout()
-        self.caja_botones_afir_cancel.addWidget(self.boton_confirmar)
         self.caja_botones_afir_cancel.addWidget(self.boton_cancelar)
 
         cajaHorizontal.addWidget(self.txtDni)
@@ -114,9 +111,16 @@ class TableView(QMainWindow):
         self.chkFallecido.setChecked(False)
 
 
-    def on_boton_aceptar(self):
+    '''
+    Añadir elemento
+    1. creamos una variable igual a los indices seleccionados
+    2. comprobamos si lo que vamos a actualizar está vacío
+    3. si no lo está, actualizamos los datos
+    4. IMPORTANTE -> poner el metodo layoutChanged.emit() para que se reflejen los cambios 
+    '''
+    def on_boton_update(self):
         indice = self.tvwTabla.selectedIndexes()
-        if indice != []:
+        if indice:
             if self.txtNombre.text() == "" or self.txtDni.text() == "" or self.cmbGenero.currentIndex() == -1:
                 print("Faltan datos para introducir")
             else:
