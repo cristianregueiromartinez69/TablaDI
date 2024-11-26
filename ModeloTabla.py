@@ -40,3 +40,4 @@ class ModeloTabla(QAbstractTableModel):
                 if self.tabla[indice.row()][indice.column()]:
                     return QtGui.QIcon("tick.png")
 
+

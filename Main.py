@@ -1,6 +1,6 @@
 import sys
 
-from PyQt6.QtWidgets import (QMainWindow, QApplication, QWidget, QVBoxLayout, QTableView)
+from PyQt6.QtWidgets import (QMainWindow, QApplication, QWidget, QVBoxLayout, QTableView, QHBoxLayout, QLineEdit)
 
 from ModeloTabla import ModeloTabla
 
@@ -20,12 +20,28 @@ class TableView(QMainWindow):
                       ["Juanita Sainz", "23423423D", "Mujer", True],
                       ["Daniela López", "12345678G", "Otro", False]]
 
+
+
         caja = QVBoxLayout()
         self.tvwTabla = QTableView()
         modelo = ModeloTabla(self.datos)
         self.tvwTabla.setModel(modelo)
 
         self.tvwTabla.setSelectionMode(QTableView.SelectionMode.SingleSelection)
+
+        self.cabecera = self.tvwTabla.horizontalHeader()
+        cajaHorizontal = QHBoxLayout()
+        caja.addLayout(cajaHorizontal)
+        self.txtNombre = QLineEdit()
+        cajaHorizontal.addWidget(self.txtNombre)
+
+        self.txtDni = QLineEdit()
+        cajaHorizontal.addWidget(self.txtDni)
+        self.txtGenero = QLineEdit()
+        cajaHorizontal.addWidget(self.txtGenero)
+        self.txtFallecido = QLineEdit()
+        cajaHorizontal.addWidget(self.txtFallecido)
+
 
         caja.addWidget(self.tvwTabla)
         container = QWidget()
