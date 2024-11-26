@@ -43,6 +43,7 @@ class TableView(QMainWindow):
         self.botonesCrud = ButtonsCrud()
         self.botonesCrud.botton_insertar.clicked.connect(self.on_boton_insert)
         self.botonesCrud.botton_actualizar.clicked.connect(self.on_boton_update)
+        self.botonesCrud.botton_borrar.clicked.connect(self.on_boton_delete)
 
         self.boton_cancelar = QPushButton("limpiar")
 
@@ -116,6 +117,15 @@ class TableView(QMainWindow):
                 self.modelo.tabla.append((self.txtNombre.text(), self.txtDni.text(), self.cmbGenero.currentText(), bool(self.chkFallecido.isChecked())))
                 self.modelo.layoutChanged.emit()
                 self.limpiarDatos()
+
+    def on_boton_delete(self):
+        indice = self.tvwTabla.selectedIndexes()
+        if indice:
+            if self.txtNombre.text() == "" or self.txtDni.text() == "" or self.cmbGenero.currentIndex() == -1:
+                print("Faltan datos para introducir")
+            else:
+                pass
+
     '''
     Añadir elemento
     1. creamos una variable igual a los indices seleccionados
