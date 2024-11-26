@@ -1,7 +1,3 @@
-import sys
-
-
-
 from PyQt6.QtCore import QAbstractTableModel, Qt
 from PyQt6 import QtGui
 
