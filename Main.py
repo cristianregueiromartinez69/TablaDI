@@ -43,8 +43,17 @@ class TableView(QMainWindow):
         self.botonesCrud = ButtonsCrud()
 
         self.boton_confirmar = QPushButton("Confirmar")
-        self.boton_confirmar.setStyleSheet("background-color: green;")
+        self.boton_cancelar = QPushButton("Cancelar")
 
+        self.boton_confirmar.clicked.connect(self.on_boton_aceptar)
+        self.boton_cancelar.clicked.connect(self.on_boton_cancelar_clicked)
+
+        self.boton_confirmar.setStyleSheet("background-color: green;")
+        self.boton_cancelar.setStyleSheet("background-color: gray;")
+
+        self.caja_botones_afir_cancel = QHBoxLayout()
+        self.caja_botones_afir_cancel.addWidget(self.boton_confirmar)
+        self.caja_botones_afir_cancel.addWidget(self.boton_cancelar)
 
         cajaHorizontal.addWidget(self.txtDni)
         self.cmbGenero = QComboBox()
@@ -53,14 +62,14 @@ class TableView(QMainWindow):
         cajaHorizontal.addWidget(self.cmbGenero)
 
         self.chkFallecido = QCheckBox("Fallecido")
-        cajaHorizontal.addWidget(self.chkFallecido)
 
+        cajaHorizontal.addWidget(self.chkFallecido)
 
 
         caja.addWidget(self.tvwTabla)
         caja.addLayout(cajaHorizontal)
+        caja.addLayout(self.caja_botones_afir_cancel)
         caja.addLayout(self.botonesCrud)
-        caja.addWidget(self.boton_confirmar)
         container = QWidget()
         container.setLayout(caja)
         self.setCentralWidget(container)
@@ -96,6 +105,22 @@ class TableView(QMainWindow):
         self.txtDni.setText(datos_fila[1])
         self.checkGenero(datos_fila[2])
         self.checkFallecido(datos_fila[3])
+
+
+    def on_boton_cancelar_clicked(self):
+        self.txtNombre.clear()
+        self.txtDni.clear()
+        self.cmbGenero.setCurrentIndex(-1)
+        self.chkFallecido.setChecked(False)
+
+
+    def on_boton_aceptar(self):
+        if self.txtNombre.text() != "" or self.txtDni.text() != "" or self.cmbGenero.currentIndex() != -1:
+            print("Faltan datos para introducir")
+        else:
+            pass
+
+
 
 
 
