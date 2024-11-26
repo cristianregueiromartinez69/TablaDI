@@ -115,10 +115,17 @@ class TableView(QMainWindow):
 
 
     def on_boton_aceptar(self):
-        if self.txtNombre.text() != "" or self.txtDni.text() != "" or self.cmbGenero.currentIndex() != -1:
-            print("Faltan datos para introducir")
-        else:
-            pass
+        indice = self.tvwTabla.selectedIndexes()
+        if indice != []:
+            if self.txtNombre.text() == "" or self.txtDni.text() == "" or self.cmbGenero.currentIndex() == -1:
+                print("Faltan datos para introducir")
+            else:
+                self.modelo.tabla[indice[0].row()][0] = self.txtNombre.text()
+                self.modelo.tabla[indice[0].row()][1] = self.txtDni.text()
+                self.modelo.tabla[indice[0].row()][2] = self.cmbGenero.currentText()
+                self.modelo.tabla[indice[0].row()][3] = True if self.chkFallecido.isChecked() else False
+                self.modelo.layoutChanged.emit()
+
 
 
 
