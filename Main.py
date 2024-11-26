@@ -41,6 +41,7 @@ class TableView(QMainWindow):
         cajaHorizontal.addWidget(self.txtNombre)
 
         self.botonesCrud = ButtonsCrud()
+        self.botonesCrud.botton_insertar.clicked.connect(self.on_boton_insert)
         self.botonesCrud.botton_actualizar.clicked.connect(self.on_boton_update)
 
         self.boton_cancelar = QPushButton("limpiar")
@@ -105,12 +106,16 @@ class TableView(QMainWindow):
 
 
     def on_boton_cancelar_clicked(self):
-        self.txtNombre.clear()
-        self.txtDni.clear()
-        self.cmbGenero.setCurrentIndex(-1)
-        self.chkFallecido.setChecked(False)
+        self.limpiarDatos()
 
 
+    def on_boton_insert(self):
+            if self.txtNombre.text() == "" or self.txtDni.text() == "" or self.cmbGenero.currentIndex() == -1:
+                print("Faltan datos para introducir")
+            else:
+                self.modelo.tabla.append((self.txtNombre.text(), self.txtDni.text(), self.cmbGenero.currentText(), bool(self.chkFallecido.isChecked())))
+                self.modelo.layoutChanged.emit()
+                self.limpiarDatos()
     '''
     Añadir elemento
     1. creamos una variable igual a los indices seleccionados
@@ -129,6 +134,13 @@ class TableView(QMainWindow):
                 self.modelo.tabla[indice[0].row()][2] = self.cmbGenero.currentText()
                 self.modelo.tabla[indice[0].row()][3] = True if self.chkFallecido.isChecked() else False
                 self.modelo.layoutChanged.emit()
+                self.limpiarDatos()
+
+    def limpiarDatos(self):
+        self.txtNombre.clear()
+        self.txtDni.clear()
+        self.cmbGenero.setCurrentIndex(-1)
+        self.chkFallecido.setChecked(False)
 
 
 
