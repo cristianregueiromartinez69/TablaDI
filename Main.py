@@ -1,7 +1,7 @@
 import sys
 
 from PyQt6.QtWidgets import (QMainWindow, QApplication, QWidget, QVBoxLayout, QTableView, QHBoxLayout, QLineEdit,
-                             QComboBox, QCheckBox, QPushButton)
+                             QComboBox, QCheckBox, QPushButton, QSizePolicy)
 
 from ModeloTabla import ModeloTabla
 from ButtonsCrud import ButtonsCrud
