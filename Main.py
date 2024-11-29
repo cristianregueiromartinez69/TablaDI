@@ -5,6 +5,7 @@ from PyQt6.QtWidgets import (QMainWindow, QApplication, QWidget, QVBoxLayout, QT
 
 from ModeloTabla import ModeloTabla
 from ButtonsCrud import ButtonsCrud
+from DatosCrudInterfaz import DatosInterfaz
 
 class TableView(QMainWindow):
     def __init__(self):
