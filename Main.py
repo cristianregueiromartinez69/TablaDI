@@ -6,6 +6,7 @@ from PyQt6.QtWidgets import (QMainWindow, QApplication, QWidget, QVBoxLayout, QT
 from ModeloTabla import ModeloTabla
 from ButtonsCrud import ButtonsCrud
 from DatosCrudInterfaz import DatosInterfaz
+from ConexionDB import ConexionBD
 
 class TableView(QMainWindow):
     def __init__(self):
@@ -15,20 +16,31 @@ class TableView(QMainWindow):
         self.setWindowTitle("Ejemplo de table view")
         self.setFixedSize(860, 400)
 
+        ''' 
         self.datos = [["Nombre", "Dni", "Genero", "Fallecido"],
                       ["Ana perez", "123123123F", "Mujer", False],
                       ["Paco Jémez", "67676767H", "Hombre", True],
                       ["Victor Roque", "12389065H", "Hombre", False],
                       ["Juanita Sainz", "23423423D", "Mujer", True],
                       ["Daniela López", "12345678G", "Otro", False]]
+        '''
 
+        '''Conexion base de datos'''
+
+        self.base = ConexionBD("usuarios.bd")
+        self.base.creaCursor()
+
+        self.datos = self.base.consultaSenParametros("SELECT * FROM usuarios")
 
 
         caja = QHBoxLayout()
         caja_vertical = QVBoxLayout()
         self.tvwTabla = QTableView()
         self.tvwTabla.clicked.connect(self.on_cell_clicked)
-        self.modelo = ModeloTabla(self.datos)
+        if self.datos is None:
+            self.modelo = ModeloTabla()
+        else:
+            self.modelo = ModeloTabla(self.datos)
         self.tvwTabla.setModel(self.modelo)
 
         self.tvwTabla.setSelectionMode(QTableView.SelectionMode.SingleSelection)
@@ -100,7 +112,7 @@ class TableView(QMainWindow):
     def on_cell_clicked(self, index):
         fila = index.row()
         datos_fila = self.modelo.tabla[fila]
-        self.datos_crud.text_dni.setText(datos_fila[0])
+        self.datos_crud.text_nombre.setText(datos_fila[0])
         self.datos_crud.text_dni.setText(datos_fila[1])
         self.checkGenero(datos_fila[2])
         self.checkFallecido(datos_fila[3])

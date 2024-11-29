@@ -3,15 +3,15 @@ from PyQt6 import QtGui
 
 
 class ModeloTabla(QAbstractTableModel):
-    def __init__(self, tabla):
+    def __init__(self, tabla = None):
         super().__init__()
-        self.tabla = tabla
+        self.tabla = tabla or []
 
     def rowCount(self, indice):
         return len(self.tabla)
 
     def columnCount(self, indice):
-        return len(self.tabla[0])
+        return len(self.tabla[0]) if len(self.tabla) != 0 else 0
 
     def data(self, indice, rol):
         if rol == Qt.ItemDataRole.EditRole or rol == Qt.ItemDataRole.DisplayRole:
