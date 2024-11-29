@@ -10,7 +10,6 @@ from ButtonsCrud import ButtonsCrud
 class DatosInterfaz(QVBoxLayout):
     def __init__(self):
         super().__init__()
-
         self.nome_xenero_caha_h = QHBoxLayout()
         self.dni_fallecido_caha_h = QHBoxLayout()
 

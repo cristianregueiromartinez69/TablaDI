@@ -13,7 +13,7 @@ class TableView(QMainWindow):
 
         super().__init__()
         self.setWindowTitle("Ejemplo de table view")
-        self.setFixedSize(400, 400)
+        self.setFixedSize(800, 400)
 
         self.datos = [["Nombre", "Dni", "Genero", "Fallecido"],
                       ["Ana perez", "123123123F", "Mujer", False],
@@ -24,7 +24,8 @@ class TableView(QMainWindow):
 
 
 
-        caja = QVBoxLayout()
+        caja = QHBoxLayout()
+        caja_vertical = QVBoxLayout()
         self.tvwTabla = QTableView()
         self.tvwTabla.clicked.connect(self.on_cell_clicked)
         self.modelo = ModeloTabla(self.datos)
@@ -33,43 +34,41 @@ class TableView(QMainWindow):
         self.tvwTabla.setSelectionMode(QTableView.SelectionMode.SingleSelection)
 
         self.cabecera = self.tvwTabla.horizontalHeader()
-        cajaHorizontal = QHBoxLayout()
-        self.txtNombre = QLineEdit()
-        self.txtNombre.setPlaceholderText("Nombre aquí...")
+        cajaHorizontal = QVBoxLayout()
 
-        self.txtDni = QLineEdit()
-        self.txtDni.setPlaceholderText("Dni aquí...")
-        cajaHorizontal.addWidget(self.txtNombre)
+        '''
+        otra clase
+        '''
+        self.datos_crud = DatosInterfaz()
+        self.datos_crud.cmb_xenero.addItems(["Mujer", "Hombre", "Otro"])
+        cajaHorizontal.addLayout(self.datos_crud)
 
         self.botonesCrud = ButtonsCrud()
         self.botonesCrud.botton_insertar.clicked.connect(self.on_boton_insert)
         self.botonesCrud.botton_actualizar.clicked.connect(self.on_boton_update)
         self.botonesCrud.botton_borrar.clicked.connect(self.on_boton_delete)
 
-        self.boton_cancelar = QPushButton("limpiar")
+        self.boton_Aceptar = QPushButton("aceptar")
+        self.boton_cancelar = QPushButton("cancelar")
 
         self.boton_cancelar.clicked.connect(self.on_boton_cancelar_clicked)
 
+        self.boton_Aceptar.setStyleSheet("background-color: green;")
         self.boton_cancelar.setStyleSheet("background-color: gray;")
 
         self.caja_botones_afir_cancel = QHBoxLayout()
         self.caja_botones_afir_cancel.addWidget(self.boton_cancelar)
+        self.caja_botones_afir_cancel.addWidget(self.boton_Aceptar)
 
-        cajaHorizontal.addWidget(self.txtDni)
-        self.cmbGenero = QComboBox()
-        self.cmbGenero.addItems(["Mujer", "Hombre", "Otro"])
 
-        cajaHorizontal.addWidget(self.cmbGenero)
 
-        self.chkFallecido = QCheckBox("Fallecido")
-
-        cajaHorizontal.addWidget(self.chkFallecido)
 
 
         caja.addWidget(self.tvwTabla)
-        caja.addLayout(cajaHorizontal)
-        caja.addLayout(self.caja_botones_afir_cancel)
-        caja.addLayout(self.botonesCrud)
+        caja_vertical.addLayout(cajaHorizontal)
+        caja_vertical.addLayout(self.caja_botones_afir_cancel)
+        caja_vertical.addLayout(self.botonesCrud)
+        caja.addLayout(caja_vertical)
         container = QWidget()
         container.setLayout(caja)
         self.setCentralWidget(container)
