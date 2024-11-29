@@ -1,7 +1,7 @@
 import sys
 
-from PyQt6.QtWidgets import (QMainWindow, QApplication, QWidget, QVBoxLayout, QTableView, QHBoxLayout, QLineEdit,
-                             QComboBox, QCheckBox, QPushButton, QSizePolicy)
+from PyQt6.QtWidgets import (QMainWindow, QApplication, QWidget, QVBoxLayout, QTableView, QHBoxLayout,
+                             QPushButton)
 
 from ModeloTabla import ModeloTabla
 from ButtonsCrud import ButtonsCrud
@@ -13,7 +13,7 @@ class TableView(QMainWindow):
 
         super().__init__()
         self.setWindowTitle("Ejemplo de table view")
-        self.setFixedSize(800, 400)
+        self.setFixedSize(860, 400)
 
         self.datos = [["Nombre", "Dni", "Genero", "Fallecido"],
                       ["Ana perez", "123123123F", "Mujer", False],
@@ -79,17 +79,17 @@ class TableView(QMainWindow):
 
     def checkGenero(self, genero):
         if genero == "Mujer":
-            self.cmbGenero.setCurrentIndex(0)
+            self.datos_crud.cmb_xenero.setCurrentIndex(0)
         elif genero == "Hombre":
-            self.cmbGenero.setCurrentIndex(1)
+            self.datos_crud.cmb_xenero.setCurrentIndex(1)
         else:
-            self.cmbGenero.setCurrentIndex(2)
+            self.datos_crud.cmb_xenero.setCurrentIndex(2)
 
     def checkFallecido(self, estado):
         if estado:
-            self.chkFallecido.setChecked(True)
+            self.datos_crud.boton_fallecido.setChecked(True)
         else:
-            self.chkFallecido.setChecked(False)
+            self.datos_crud.boton_fallecido.setChecked(False)
     '''
     Explicacion:
     1. el metodo recibe el indice por parámetro
@@ -100,8 +100,8 @@ class TableView(QMainWindow):
     def on_cell_clicked(self, index):
         fila = index.row()
         datos_fila = self.modelo.tabla[fila]
-        self.txtNombre.setText(datos_fila[0])
-        self.txtDni.setText(datos_fila[1])
+        self.datos_crud.text_dni.setText(datos_fila[0])
+        self.datos_crud.text_dni.setText(datos_fila[1])
         self.checkGenero(datos_fila[2])
         self.checkFallecido(datos_fila[3])
 
@@ -111,17 +111,17 @@ class TableView(QMainWindow):
 
 
     def on_boton_insert(self):
-            if self.txtNombre.text() == "" or self.txtDni.text() == "" or self.cmbGenero.currentIndex() == -1:
+            if self.datos_crud.text_nombre.text() == "" or self.datos_crud.text_dni.text() == "" or self.datos_crud.cmb_xenero.currentIndex() == -1:
                 print("Faltan datos para introducir")
             else:
-                self.modelo.tabla.append((self.txtNombre.text(), self.txtDni.text(), self.cmbGenero.currentText(), bool(self.chkFallecido.isChecked())))
+                self.modelo.tabla.append((self.datos_crud.text_nombre.text(), self.datos_crud.text_dni.text(), self.datos_crud.cmb_xenero.currentText(), bool(self.datos_crud.boton_fallecido.isChecked())))
                 self.modelo.layoutChanged.emit()
                 self.limpiarDatos()
 
     def on_boton_delete(self):
         indice = self.tvwTabla.selectedIndexes()
         if indice:
-            if self.txtNombre.text() == "" or self.txtDni.text() == "" or self.cmbGenero.currentIndex() == -1:
+            if self.datos_crud.text_nombre.text() == "" or self.datos_crud.text_dni.text() == "" or self.datos_crud.cmb_xenero.currentIndex() == -1:
                 print("Faltan datos para introducir")
             else:
                 pass
@@ -136,21 +136,21 @@ class TableView(QMainWindow):
     def on_boton_update(self):
         indice = self.tvwTabla.selectedIndexes()
         if indice:
-            if self.txtNombre.text() == "" or self.txtDni.text() == "" or self.cmbGenero.currentIndex() == -1:
+            if self.datos_crud.text_nombre.text() == "" or self.datos_crud.text_dni.text() == "" or self.datos_crud.cmb_xenero.currentIndex() == -1:
                 print("Faltan datos para introducir")
             else:
-                self.modelo.tabla[indice[0].row()][0] = self.txtNombre.text()
-                self.modelo.tabla[indice[0].row()][1] = self.txtDni.text()
-                self.modelo.tabla[indice[0].row()][2] = self.cmbGenero.currentText()
-                self.modelo.tabla[indice[0].row()][3] = True if self.chkFallecido.isChecked() else False
+                self.modelo.tabla[indice[0].row()][0] = self.datos_crud.text_nombre.text()
+                self.modelo.tabla[indice[0].row()][1] = self.datos_crud.text_dni.text()
+                self.modelo.tabla[indice[0].row()][2] = self.datos_crud.cmb_xenero.currentText()
+                self.modelo.tabla[indice[0].row()][3] = True if self.datos_crud.boton_fallecido.isChecked() else False
                 self.modelo.layoutChanged.emit()
                 self.limpiarDatos()
 
     def limpiarDatos(self):
-        self.txtNombre.clear()
-        self.txtDni.clear()
-        self.cmbGenero.setCurrentIndex(-1)
-        self.chkFallecido.setChecked(False)
+        self.datos_crud.text_nombre.clear()
+        self.datos_crud.text_dni.clear()
+        self.datos_crud.cmb_xenero.setCurrentIndex(-1)
+        self.datos_crud.boton_fallecido.setChecked(False)
 
 
 
