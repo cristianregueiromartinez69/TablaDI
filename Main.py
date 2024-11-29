@@ -66,8 +66,8 @@ class TableView(QMainWindow):
 
         caja.addWidget(self.tvwTabla)
         caja_vertical.addLayout(cajaHorizontal)
-        caja_vertical.addLayout(self.caja_botones_afir_cancel)
         caja_vertical.addLayout(self.botonesCrud)
+        caja_vertical.addLayout(self.caja_botones_afir_cancel)
         caja.addLayout(caja_vertical)
         container = QWidget()
         container.setLayout(caja)
