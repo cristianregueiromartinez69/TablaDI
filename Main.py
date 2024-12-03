@@ -100,13 +100,17 @@ class TableView(QMainWindow):
 
     def on_boton_cancelar_clicked(self):
         self.limpiarDatos()
+        self.bloquear_botones_procesos(True)
+        self.bloquear_controles(False)
+
+
 
     def on_boton_insert(self):
         self.desbloquear_controles_edicion(True)
         self.desbloquear_boton_aceptar_cancelar(True)
         self.bloquear_botones_procesos(False)
         if self.datos_crud.text_nombre.text() == "" or self.datos_crud.text_dni.text() == "" or self.datos_crud.cmb_xenero.currentIndex() == -1:
-            print("Faltan datos para introducir")
+            print("Introduce datos")
         else:
             nuevo_usuario = (
                 self.datos_crud.text_dni.text(),
