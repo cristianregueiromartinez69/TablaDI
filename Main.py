@@ -32,6 +32,7 @@ class TableView(QMainWindow):
         self.tvwTabla.setSelectionMode(QTableView.SelectionMode.SingleSelection)
         self.cabecera = self.tvwTabla.horizontalHeader()
 
+
         # Resto de la interfaz
         cajaHorizontal = QVBoxLayout()
         self.datos_crud = DatosInterfaz()
@@ -105,7 +106,18 @@ class TableView(QMainWindow):
             if self.datos_crud.text_nombre.text() == "" or self.datos_crud.text_dni.text() == "" or self.datos_crud.cmb_xenero.currentIndex() == -1:
                 print("Faltan datos para introducir")
             else:
-                self.modelo.tabla.append((self.datos_crud.text_nombre.text(), self.datos_crud.text_dni.text(), self.datos_crud.cmb_xenero.currentText(), bool(self.datos_crud.boton_fallecido.isChecked())))
+                nuevo_usuario = (
+                    self.datos_crud.text_dni.text(),
+                    self.datos_crud.text_nombre.text(),
+                    self.datos_crud.cmb_xenero.currentText(),
+                    int(self.datos_crud.boton_fallecido.isChecked()),
+                )
+
+                # Inserta en la base de datos
+                self.base.insertar_usuario(nuevo_usuario)
+
+                # Actualiza la tabla
+                self.modelo.tabla.append(nuevo_usuario)
                 self.modelo.layoutChanged.emit()
                 self.limpiarDatos()
 

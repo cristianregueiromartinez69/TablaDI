@@ -79,3 +79,15 @@ class ConexionBD:
                 print("Datos iniciales insertados.")
         except sqlite3.Error as e:
             print(f"Error al insertar datos iniciales: {e}")
+
+
+    def insertar_usuario(self, datos):
+        try:
+            self.cursor.execute(
+                "INSERT INTO usuarios (dni, nombre, genero, fallecido) VALUES(?, ?, ?, ?)",
+                datos,
+            )
+            self.conexion.commit()
+            print("Usuario inserido correctamente.")
+        except sqlite3.Error as e:
+            print(f"Error al insertar datos usuarios: {e}")
