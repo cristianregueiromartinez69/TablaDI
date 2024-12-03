@@ -11,46 +11,29 @@ from ConexionDB import ConexionBD
 class TableView(QMainWindow):
     def __init__(self):
         super().__init__()
-
-        super().__init__()
         self.setWindowTitle("Ejemplo de table view")
         self.setFixedSize(860, 400)
 
-        ''' 
-        self.datos = [["Nombre", "Dni", "Genero", "Fallecido"],
-                      ["Ana perez", "123123123F", "Mujer", False],
-                      ["Paco Jémez", "67676767H", "Hombre", True],
-                      ["Victor Roque", "12389065H", "Hombre", False],
-                      ["Juanita Sainz", "23423423D", "Mujer", True],
-                      ["Daniela López", "12345678G", "Otro", False]]
-        '''
-
-        '''Conexion base de datos'''
-
-        self.base = ConexionBD("usuarios.bd")
-        self.base.creaCursor()
-
+        # Conexión a la base de datos
+        self.base = ConexionBD("usuarios.db")
+        self.base.crear_tabla()
+        #self.base.insertar_datos_iniciales()
         self.datos = self.base.consultaSenParametros("SELECT * FROM usuarios")
 
-
+        # Layouts y configuración de la tabla
         caja = QHBoxLayout()
         caja_vertical = QVBoxLayout()
         self.tvwTabla = QTableView()
         self.tvwTabla.clicked.connect(self.on_cell_clicked)
-        if self.datos is None:
-            self.modelo = ModeloTabla()
-        else:
-            self.modelo = ModeloTabla(self.datos)
+
+        # Modelo de datos
+        self.modelo = ModeloTabla(self.datos) if self.datos else ModeloTabla()
         self.tvwTabla.setModel(self.modelo)
-
         self.tvwTabla.setSelectionMode(QTableView.SelectionMode.SingleSelection)
-
         self.cabecera = self.tvwTabla.horizontalHeader()
-        cajaHorizontal = QVBoxLayout()
 
-        '''
-        otra clase
-        '''
+        # Resto de la interfaz
+        cajaHorizontal = QVBoxLayout()
         self.datos_crud = DatosInterfaz()
         self.datos_crud.cmb_xenero.addItems(["Mujer", "Hombre", "Otro"])
         cajaHorizontal.addLayout(self.datos_crud)
@@ -60,27 +43,23 @@ class TableView(QMainWindow):
         self.botonesCrud.botton_actualizar.clicked.connect(self.on_boton_update)
         self.botonesCrud.botton_borrar.clicked.connect(self.on_boton_delete)
 
-        self.boton_Aceptar = QPushButton("aceptar")
-        self.boton_cancelar = QPushButton("cancelar")
-
+        # Botones aceptar/cancelar
+        self.boton_Aceptar = QPushButton("Aceptar")
+        self.boton_cancelar = QPushButton("Cancelar")
         self.boton_cancelar.clicked.connect(self.on_boton_cancelar_clicked)
-
         self.boton_Aceptar.setStyleSheet("background-color: green;")
         self.boton_cancelar.setStyleSheet("background-color: gray;")
-
         self.caja_botones_afir_cancel = QHBoxLayout()
         self.caja_botones_afir_cancel.addWidget(self.boton_cancelar)
         self.caja_botones_afir_cancel.addWidget(self.boton_Aceptar)
 
-
-
-
-
+        # Configuración final
         caja.addWidget(self.tvwTabla)
         caja_vertical.addLayout(cajaHorizontal)
         caja_vertical.addLayout(self.botonesCrud)
         caja_vertical.addLayout(self.caja_botones_afir_cancel)
         caja.addLayout(caja_vertical)
+
         container = QWidget()
         container.setLayout(caja)
         self.setCentralWidget(container)

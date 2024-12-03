@@ -36,4 +36,10 @@ class ModeloTabla(QAbstractTableModel):
                 if self.tabla[indice.row()][indice.column()]:
                     return QtGui.QIcon("tick.png")
 
+    def flags(self, index):
+        if index.column() == 1:
+            return Qt.ItemFlag.ItemIsEnabled
+        return Qt.ItemFlag.ItemIsEnabled | Qt.ItemFlag.ItemIsEditable | Qt.ItemFlag.ItemIsSelectable
+
+
 
