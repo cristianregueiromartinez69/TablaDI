@@ -91,3 +91,5 @@ class ConexionBD:
             print("Usuario inserido correctamente.")
         except sqlite3.Error as e:
             print(f"Error al insertar datos usuarios: {e}")
+
+

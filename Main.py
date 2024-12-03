@@ -8,16 +8,17 @@ from ButtonsCrud import ButtonsCrud
 from DatosCrudInterfaz import DatosInterfaz
 from ConexionDB import ConexionBD
 
+
 class TableView(QMainWindow):
     def __init__(self):
         super().__init__()
         self.setWindowTitle("Ejemplo de table view")
-        self.setFixedSize(860, 400)
+        self.setFixedSize(850, 400)
 
         # Conexión a la base de datos
         self.base = ConexionBD("usuarios.db")
         self.base.crear_tabla()
-        #self.base.insertar_datos_iniciales()
+        # self.base.insertar_datos_iniciales()
         self.datos = self.base.consultaSenParametros("SELECT * FROM usuarios")
 
         # Layouts y configuración de la tabla
@@ -31,7 +32,6 @@ class TableView(QMainWindow):
         self.tvwTabla.setModel(self.modelo)
         self.tvwTabla.setSelectionMode(QTableView.SelectionMode.SingleSelection)
         self.cabecera = self.tvwTabla.horizontalHeader()
-
 
         # Resto de la interfaz
         cajaHorizontal = QVBoxLayout()
@@ -64,10 +64,9 @@ class TableView(QMainWindow):
         container = QWidget()
         container.setLayout(caja)
         self.setCentralWidget(container)
+        self.bloquear_controles(False)
+        self.bloquear_botones_procesos(True)
         self.show()
-
-
-
 
     def checkGenero(self, genero):
         if genero == "Mujer":
@@ -82,6 +81,7 @@ class TableView(QMainWindow):
             self.datos_crud.boton_fallecido.setChecked(True)
         else:
             self.datos_crud.boton_fallecido.setChecked(False)
+
     '''
     Explicacion:
     1. el metodo recibe el indice por parámetro
@@ -89,6 +89,7 @@ class TableView(QMainWindow):
     3. recogemos en una variable la información de la fila asginada
     4. cambiamos los valores de los campos por lo que hay en los datos recogidos
     '''
+
     def on_cell_clicked(self, index):
         fila = index.row()
         datos_fila = self.modelo.tabla[fila]
@@ -97,29 +98,30 @@ class TableView(QMainWindow):
         self.checkGenero(datos_fila[2])
         self.checkFallecido(datos_fila[3])
 
-
     def on_boton_cancelar_clicked(self):
         self.limpiarDatos()
 
-
     def on_boton_insert(self):
-            if self.datos_crud.text_nombre.text() == "" or self.datos_crud.text_dni.text() == "" or self.datos_crud.cmb_xenero.currentIndex() == -1:
-                print("Faltan datos para introducir")
-            else:
-                nuevo_usuario = (
-                    self.datos_crud.text_dni.text(),
-                    self.datos_crud.text_nombre.text(),
-                    self.datos_crud.cmb_xenero.currentText(),
-                    int(self.datos_crud.boton_fallecido.isChecked()),
-                )
+        self.desbloquear_controles_edicion(True)
+        self.desbloquear_boton_aceptar_cancelar(True)
+        self.bloquear_botones_procesos(False)
+        if self.datos_crud.text_nombre.text() == "" or self.datos_crud.text_dni.text() == "" or self.datos_crud.cmb_xenero.currentIndex() == -1:
+            print("Faltan datos para introducir")
+        else:
+            nuevo_usuario = (
+                self.datos_crud.text_dni.text(),
+                self.datos_crud.text_nombre.text(),
+                self.datos_crud.cmb_xenero.currentText(),
+                int(self.datos_crud.boton_fallecido.isChecked()),
+            )
 
-                # Inserta en la base de datos
-                self.base.insertar_usuario(nuevo_usuario)
+            # Inserta en la base de datos
+            self.base.insertar_usuario(nuevo_usuario)
 
-                # Actualiza la tabla
-                self.modelo.tabla.append(nuevo_usuario)
-                self.modelo.layoutChanged.emit()
-                self.limpiarDatos()
+            # Actualiza la tabla
+            self.modelo.tabla.append(nuevo_usuario)
+            self.modelo.layoutChanged.emit()
+            self.limpiarDatos()
 
     def on_boton_delete(self):
         indice = self.tvwTabla.selectedIndexes()
@@ -136,6 +138,7 @@ class TableView(QMainWindow):
     3. si no lo está, actualizamos los datos
     4. IMPORTANTE -> poner el metodo layoutChanged.emit() para que se reflejen los cambios 
     '''
+
     def on_boton_update(self):
         indice = self.tvwTabla.selectedIndexes()
         if indice:
@@ -149,6 +152,45 @@ class TableView(QMainWindow):
                 self.modelo.layoutChanged.emit()
                 self.limpiarDatos()
 
+    def bloquear_controles(self, estado):
+        self.datos_crud.label_nombre.setEnabled(estado)
+        self.datos_crud.label_dni.setEnabled(estado)
+        self.datos_crud.label_xenero.setEnabled(estado)
+        self.datos_crud.boton_fallecido.setEnabled(estado)
+        self.datos_crud.text_nombre.setEnabled(estado)
+        self.datos_crud.text_dni.setEnabled(estado)
+        self.datos_crud.cmb_xenero.setEnabled(estado)
+        self.boton_Aceptar.setEnabled(estado)
+        self.boton_cancelar.setEnabled(estado)
+
+    def desbloquear_controles_edicion(self, estado):
+        self.datos_crud.label_nombre.setEnabled(estado)
+        self.datos_crud.label_dni.setEnabled(estado)
+        self.datos_crud.label_xenero.setEnabled(estado)
+        self.datos_crud.boton_fallecido.setEnabled(estado)
+        self.datos_crud.text_nombre.setEnabled(estado)
+        self.datos_crud.text_dni.setEnabled(estado)
+        self.datos_crud.cmb_xenero.setEnabled(estado)
+
+    def desbloquear_boton_aceptar_cancelar(self, estado):
+        self.boton_Aceptar.setEnabled(estado)
+        self.boton_cancelar.setEnabled(estado)
+
+    def bloquear_botones_procesos(self, estado):
+        self.botonesCrud.botton_actualizar.setEnabled(estado)
+        self.botonesCrud.botton_insertar.setEnabled(estado)
+        self.botonesCrud.botton_borrar.setEnabled(estado)
+
+    def desbloquear_botones_procesos(self, estado):
+        self.botonesCrud.botton_actualizar.setEnabled(estado)
+        self.botonesCrud.botton_insertar.setEnabled(estado)
+        self.botonesCrud.botton_borrar.setEnabled(estado)
+
+
+
+
+
+
     def limpiarDatos(self):
         self.datos_crud.text_nombre.clear()
         self.datos_crud.text_dni.clear()
@@ -156,21 +198,11 @@ class TableView(QMainWindow):
         self.datos_crud.boton_fallecido.setChecked(False)
 
 
-
-
-
-
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     window = TableView()
     app.exec()
 
-
-
 '''
 Hacer que al pulsar en una fila, se manden los datos a los campos de abajo
 '''
-
-
-
-
